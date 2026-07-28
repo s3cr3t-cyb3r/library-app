@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyText
+  genre: MyText
+  year_published: 1
+  available: false
+
+two:
+  title: MyText
+  genre: MyText
+  year_published: 1
+  available: false
