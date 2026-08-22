@@ -4,9 +4,9 @@ class AuthorsController < ApplicationController
         authors_updated = []
         authors.each do |author|
             author = {
-                id: author.id
-                age: author.age
-                bio: author.biography
+                id: author.id,
+                age: author.age,
+                bio: author.biography,
                 name: author.name
             }
             authors_updated << author
@@ -19,17 +19,17 @@ class AuthorsController < ApplicationController
         author = Author.find_by(id: params[:id])
 
         render json: {
-            id: author.id
-            age: author.age
-            bio: author.biography
+            id: author.id,
+            age: author.age,
+            bio: author.biography,
             name: author.name
         }
     end
 
     def create
         author = Author.create(
-            age: params[:age]
-            bio: params[:biography]
+            age: params[:age],
+            bio: params[:biography],
             name: params[:name]
         )
         if author.valid?
@@ -43,8 +43,8 @@ class AuthorsController < ApplicationController
         author = Author.find_by(id: params[:id])
 
         author.update(
-            age: params[:age] || author.age
-            bio: params[:biography] || author.biography
+            age: params[:age] || author.age,
+            bio: params[:biography] || author.biography,
             name: params[:name] || author.name
         )
 
