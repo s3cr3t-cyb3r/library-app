@@ -6,7 +6,7 @@ class AuthorsController < ApplicationController
             author = {
                 id: author.id,
                 age: author.age,
-                bio: author.biography,
+                biography: author.biography,
                 name: author.name
             }
             authors_updated << author
@@ -18,44 +18,58 @@ class AuthorsController < ApplicationController
     def show
         author = Author.find_by(id: params[:id])
 
-        render json: {
-            id: author.id,
-            age: author.age,
-            bio: author.biography,
-            name: author.name
-        }
+        if author
+            render json: {
+                id: author.id,
+                age: author.age,
+                biography: author.biography,
+                name: author.name
+            }
+        else
+            render json: { message: "Author does not exist in database" }, status: :not_found
+        end
     end
 
     def create
-        author = Author.create(
+        author = Author.new(
             age: params[:age],
-            bio: params[:biography],
+            biography: params[:biography],
             name: params[:name]
         )
+        author.save
         if author.valid?
-            render json: author
+            render json: author, status: :created
         else
-            render json: {errors: product.errors.full_messages}, status: :unprocessable_entity
+            render json: {errors: author.errors.full_messages}, status: :unprocessable_entity
         end
     end
 
     def update
         author = Author.find_by(id: params[:id])
 
-        author.update(
-            age: params[:age] || author.age,
-            bio: params[:biography] || author.biography,
-            name: params[:name] || author.name
-        )
-
-        render json: author
+        if author
+            if author.update(
+                age: params[:age] || author.age,
+                biography: params[:biography] || author.biography,
+                name: params[:name] || author.name
+            )
+                render json: author
+            else
+                render json: { errors: author.errors.full_messages }, status: :unprocessable_entity
+            end
+        else
+            render json: {  message: "Author not found in database" }, status: :not_found
+        end
     end
 
     def delete
         author = Author.find_by(id: params[:id])
 
-        author.destroy
-
-        render json: {message: "Deleted successfully"}
+        if author
+            author.destroy
+            render json: {message: "Deleted successfully"}
+        else
+            render json: {  message: "Author not found in database" }, status: :not_found
+        end
     end
 end
