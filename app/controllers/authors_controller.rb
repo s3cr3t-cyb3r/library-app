@@ -34,7 +34,7 @@ class AuthorsController < ApplicationController
         author = Author.new(
             age: params[:age],
             biography: params[:biography],
-            name: params[:name]
+            name: params[:name] || Faker::Name.name
         )
         author.save
         if author.valid?
